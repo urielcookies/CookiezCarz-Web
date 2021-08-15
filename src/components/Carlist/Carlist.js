@@ -24,10 +24,11 @@ const CarList = (props) => {
   const carListOwner = !userId;
 
   return (
-    <div>
+    <div style={{ height: '100%' }}>
 
       {carListOwner && (
         <Button
+          style={{ height: '5%' }}
           fluid
           content="Add New Car"
           color="teal"
@@ -35,6 +36,8 @@ const CarList = (props) => {
           onClick={() => history.push('/home/mycarlist/addcar')}
         />
       )}
+
+      <div style={{ height: '2%' }} />
 
       {/* <Dropdown
         fluid
@@ -53,7 +56,7 @@ const CarList = (props) => {
           )
           : (carsList.length
             ? (
-              <div style={{ height: '85.5vh', overflow: 'hidden', overflowY: 'auto' }}>
+              <div style={{ height: '93%', overflowY: 'auto' }}>
                 <Table unstackable basic striped compact="very" columns="5">
                   <Table.Header>
                     <Table.Row>
