@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { noop, toLower } from 'lodash';
 
 import Navbar from '../components/Navbar/Navbar.js';
@@ -24,7 +24,7 @@ const Routes: FC = () => {
   const activeUser = useActiveUser();
   const setActiveUserUpdate = useActiveUserUpdate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const hasCookie = getCookie('token');
+  const hasCookie = Boolean(getCookie('token'));
 
   useEffect(() => {
     // Need to re-render component for container div to fix itself
@@ -48,7 +48,7 @@ const Routes: FC = () => {
       ? <PageLoad />
       : (
         <Switch>
-          <Route exact path="/" component={LoginTSX} />
+          <Route exact path="/login" component={LoginTSX} />
           <Route exact path="/home" component={withLoginAuthentication(Home)} />
           <Route exact path="/home/mycarlist/addcar" component={withLoginAuthentication(AddCarForm)} />
           <Route exact path="/details/:id/:tab" component={withLoginAuthentication(DetailsForm)} />
@@ -57,6 +57,7 @@ const Routes: FC = () => {
           <Route exact path="/home/:carlist/:userId" component={withLoginAuthentication(Carlist)} />
           <Route exact path="/home/:carlist/:userId/:carInfoId/:tab" component={withLoginAuthentication(DetailsForm)} />
           <Route exact path="/trip" component={Trip} />
+          <Redirect from="/" to={`${hasCookie ? '/home' : '/login'}`} />
         </Switch>
       )
   );

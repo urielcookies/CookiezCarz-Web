@@ -23,7 +23,6 @@ const MobileFooterNavigation: FC<MobileFooterNavigationProps> = ({ history }) =>
           setValue(newValue);
         }}
         showLabels
-        id="navigation"
         style={{ height: '7.5vh' }}
       >
         <BottomNavigationAction
