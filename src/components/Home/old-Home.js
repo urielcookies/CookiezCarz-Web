@@ -1,131 +1,91 @@
-import React from 'react';
-// import {Link} from 'react-router-dom';
-import {Table, Image, Container} from 'semantic-ui-react'
-// import {Redirect} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { withRouter } from 'react-router-dom';
+import {
+  Card, Dimmer, Icon, Grid, Loader, Container,
+} from 'semantic-ui-react';
+import { map } from 'lodash';
+import { useActiveUser } from '../../context/ActiveUserContext';
 
-// import {fetchCars} from '../../endpoints';
+import { fetchUsers } from '../../endpoints';
 
 const Home = (props) => {
-  // const [isLoaded, setLoaded] = useState(false);
-  // const [cars, setCarList] = useState([]);
+  const activeUser = useActiveUser();
+  // const [isActiveLoading, setIsActiveAccountLoading] = useState(true);
+  const [isUsersLoading, setIsUsersLoading] = useState(true);
 
-  // useEffect(() => {
-  //   fetchCars({isLoaded, setLoaded, setCarList});
-  // }, [cars]);
+  // const [activeAccount, setActiveAccount] = useState({});
+  const [users, setUsers] = useState([]);
 
-  // console.log('cars', cars);
-
-  // window.scrollTo(0, 0);
+  useEffect(() => {
+    // eslint-disable-next-line no-undef
+    if (window.deferredPrompt) {
+      window.deferredPrompt();
+      window.deferredPrompt.userChoice((choiceResult) => {
+        if (choiceResult === 'dismissed') console.log('User Rejected Home App Screen');
+        else console.log('User Accepted Home App Screen');
+      });
+      window.deferredPrompt = null;
+    }
+    // fetchActiveAccount({ isActiveLoading, setIsActiveAccountLoading, setActiveAccount });
+    fetchUsers({ isUsersLoading, setIsUsersLoading, setUsers });
+  }, [isUsersLoading]);
 
   return (
-    <div style={{height: '100vh'}}>
-      <Table unstackable basic selectable sortable>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>Label</Table.HeaderCell>
-            <Table.HeaderCell>Year</Table.HeaderCell>
-            <Table.HeaderCell>Brand</Table.HeaderCell>
-            <Table.HeaderCell>Model</Table.HeaderCell>
-            <Table.HeaderCell>Total Cost</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
+    <div>
+      {isUsersLoading
+        ? (
+          <Dimmer active inverted page>
+            <Loader inverted>Loading</Loader>
+          </Dimmer>
+        )
+        : (
+          <Container textAlign="center">
+            <Grid id="semanticGrid">
+              <Grid.Row columns={2}>
+                <Grid.Column>
+                  <Card centered onClick={() => props.history.push('/home/mycarlist')}>
+                    <Card.Content>
+                      <Icon name="folder open outline" color="black" size="big" />
+                      <Card.Header style={ellipsisStyle} title={activeUser.Username} content={activeUser.Username} />
+                      <Card.Meta style={ellipsisStyle} title={activeUser.Email} content={activeUser.Email} />
+                    </Card.Content>
+                  </Card>
+                </Grid.Column>
 
-        <Table.Body>
-          <Table.Row>
-            <Table.Cell>
-              <Image src='https://4ever.blob.core.windows.net/cars/1/athumbnail_IMG_4452.jpg' size='mini' />
-            </Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-          </Table.Row>
-        </Table.Body>
-      </Table>
+                {map(users, (user) => (
+                  <Grid.Column textAlign="center" key={user.Id}>
+                    <Card centered onClick={() => props.history.push(`/home/carlist/${user.Id}`)}>
+                      <Card.Content>
+                        <Icon name="folder open outline" color="black" size="big" />
+                        <Card.Header style={ellipsisStyle} content={user.Username} />
+                        <Card.Meta style={ellipsisStyle} content={user.Email} />
+                      </Card.Content>
+                    </Card>
+                  </Grid.Column>
+                ))}
+              </Grid.Row>
+            </Grid>
+          </Container>
+        )}
     </div>
   );
-//   return (
-//     <Container textAlign="center">
-//       {/* <Button color='green' size='large'><Link style={{color: 'white'}} to="/addcar">Add Car</Link></Button> */}
-//       {/* <Button color='orange' size='large'><Link style={{color: 'white'}} to="/trip">Trip</Link></Button> */}
-//       <Menu widths={2}>
-//         <Menu.Item
-//           style={{color: '#00b5ad'}}
-//           name='Add Car'
-//           onClick={() => props.history.push('addcar')}
-//         />
-//         <Menu.Item
-//           style={{color: '#00b5ad'}}
-//           name='Trip'
-//           onClick={() => props.history.push('trip')}
-//         />
-//         {/* <Menu.Menu position='right'>
-//           <Menu.Item>
-//             <Input icon='search' placeholder='Search...' />
-//           </Menu.Item>
-//           <Menu.Item
-//             name='logout'
-//             onClick={this.handleItemClick}
-//           />
-//         </Menu.Menu> */}
-//       </Menu>
-//       <Divider />
-//       {cars && cars.map((car) => (
-//         <Card key={car.id} centered style={{display: 'inline-block', marginLeft: '15px', marginRight: '15px'}}>
-//           <Image style={{height: '200px', width: '100%'}} src={car.images[0]} />
-//           <Card.Content>
-//             <Card.Header>{car.year} {car.brand} {car.model}</Card.Header>
-//           </Card.Content>
-//           <Card.Content extra>
-//           <Button disabled color='teal' size='large' floated='left'>Images</Button>
-//           <Button color='blue' size='large' floated='right'><Link style={{color: 'white'}} to={`/details/${car.id}/info`}>Details</Link></Button>
-//           </Card.Content>
-//         </Card>
-//       ))}
-
-// {/* 
-//       <Card centered style={{display: 'inline-block', marginLeft: '15px', marginRight: '15px'}}>
-//         <Image style={{height: '200px', width: '100%'}} src='https://www.usautosblog.com/wp-content/uploads/2018/09/2019-nissan-maxima.jpg' />
-//         <Card.Content>
-//           <Card.Header>Year Brand Model</Card.Header>
-//         </Card.Content>
-//         <Card.Content extra>
-//         <Button color='teal' size='large' floated='left'>Images</Button>
-//         <Button color='blue' size='large' floated='right'><Link style={{color: 'white'}} to={`/details/${2}`}>Details</Link></Button>
-//         </Card.Content>
-//       </Card>
-
-//       <Card centered style={{display: 'inline-block', marginLeft: '15px', marginRight: '15px'}}>
-//         <Image style={{height: '200px', width: '100%'}} src='https://carpreviewandrumors.com/wp-content/uploads/2017/10/2019-jeep-grand-cherokee-exterior-image.jpg' />
-//         <Card.Content>
-//           <Card.Header>Year Brand Model</Card.Header>
-//         </Card.Content>
-//         <Card.Content extra>
-//         <Button color='teal' size='large' floated='left'>Images</Button>
-//         <Button color='blue' size='large' floated='right'><Link style={{color: 'white'}} to={`/details/${3}`}>Details</Link></Button>
-//         </Card.Content>
-//       </Card> */}
-//     </Container>
-//   );
 };
 
-//Tabs
-  // Car Info
-  // ROI
-  // Images
+const ellipsisStyle = {
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+};
 
-export default Home;
+// const textTruncate = (str, length, ending) => {
+//   if (length == null) length = 100;
+
+//   if (ending == null) ending = '...';
+
+//   if (str.length > length) 
+//     return str.substring(0, length - ending.length) + ending;
+//   else
+//     return str;
+// };
+
+export default withRouter(Home);

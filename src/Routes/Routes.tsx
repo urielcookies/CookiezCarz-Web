@@ -7,7 +7,7 @@ import AddCarForm from '../components/AddCarForm/AddCarForm';
 import Carlist from '../components/Carlist/Carlist';
 import DetailsForm from '../components/DetailsForm/DetailsForm';
 import Home from '../components/Home/Home';
-import LoginTSX from '../components/Login/Login';
+import Login from '../components/Login/Login';
 import MobileFooterNavigation from '../components/MobileFooterNavigation/MobileFooterNavigation';
 import Settings from '../components/Settings/Settings';
 import Trip from '../components/Trip/Trip';
@@ -48,7 +48,7 @@ const Routes: FC = () => {
       ? <PageLoad />
       : (
         <Switch>
-          <Route exact path="/login" component={LoginTSX} />
+          <Route exact path="/login" component={Login} />
           <Route exact path="/home" component={withLoginAuthentication(Home)} />
           <Route exact path="/home/mycarlist/addcar" component={withLoginAuthentication(AddCarForm)} />
           <Route exact path="/details/:id/:tab" component={withLoginAuthentication(DetailsForm)} />
