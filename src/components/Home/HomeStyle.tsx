@@ -1,9 +1,14 @@
 import styled from 'styled-components';
 
 const HomeStyle = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  height: 100%;
+  overflow-y: auto;
+
+  #outterDiv {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
 
   .card {
     flex: 0 1 49%;
