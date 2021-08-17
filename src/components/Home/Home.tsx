@@ -31,14 +31,20 @@ const Home: FC = () => {
         </Card>
 
         {map(users.data, (user: ActiveUser) => (
-          <Card className="card" variant="outlined" onClick={() => push(`/home/carlist/${user?.Id}`)}>
+          <Card
+            key={user.Id}
+            className="card"
+            variant="outlined"
+            onClick={() => push(`/home/carlist/${user.Id}`)}
+          >
+
             <div className="iconDiv">
               <FolderSharedOutlined style={{ fontSize: 45 }} />
             </div>
             <CardHeader
               className="cardHeader"
-              title={user?.Username}
-              subheader={user?.Email}
+              title={user.Username}
+              subheader={user.Email}
             />
           </Card>
         ))}

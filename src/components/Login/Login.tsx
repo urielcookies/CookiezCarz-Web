@@ -1,8 +1,8 @@
-import React, { FC, useState } from 'react';
-import { withRouter } from 'react-router-dom';
-import { History } from 'history';
+import { FC, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { flow as compose, isUndefined } from 'lodash';
+
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { withTheme } from '@material-ui/core/styles';
 import {
@@ -20,18 +20,19 @@ import {
 } from '@material-ui/core';
 
 import LoginStyle from './LoginStyle';
+
 import { fetchActiveUser, loginUser, writeCookie } from '../../endpoints';
 import { ActiveUser, useActiveUserUpdate } from '../../context/ActiveUserContext';
 
 interface LoginProps {
-  history: History;
   theme: Theme;
 }
 
-const Login: FC<LoginProps> = ({ history: { push }, theme }) => {
+const Login: FC<LoginProps> = ({ theme }) => {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
 
+  const { push } = useHistory();
   const setActiveUserUpdate = useActiveUserUpdate();
 
   const formik = useFormik({
@@ -128,5 +129,4 @@ const Login: FC<LoginProps> = ({ history: { push }, theme }) => {
 
 export default compose(
   withTheme,
-  withRouter,
 )(Login);

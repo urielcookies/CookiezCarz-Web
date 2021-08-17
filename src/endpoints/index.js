@@ -105,16 +105,22 @@ export const fetchUsers = () => {
     .catch((error) => console.log(error));
 };
 
-export const fetchCars = ({ isLoading, setIsLoading, setCarList }) => {
-  if (isLoading) {
-    const headers = { 'Content-Type': 'application/json', token: getCookie('token') };
-    get(`${URL}/api/carinformation`, { headers })
-      .then(({ data }) => {
-        setIsLoading(false);
-        setCarList(reverse(data));
-      })
-      .catch((error) => console.log(error));
-  }
+// export const fetchCars = ({ isLoading, setIsLoading, setCarList }) => {
+//   if (isLoading) {
+//     const headers = { 'Content-Type': 'application/json', token: getCookie('token') };
+//     get(`${URL}/api/carinformation`, { headers })
+//       .then(({ data }) => {
+//         setIsLoading(false);
+//         setCarList(reverse(data));
+//       })
+//       .catch((error) => console.log(error));
+//   }
+// };
+
+export const fetchCars = () => {
+  const headers = { 'Content-Type': 'application/json', token: getCookie('token') };
+  return get(`${URL}/api/carinformation`, { headers })
+    .catch((error) => console.log(error));
 };
 
 export const createCar = (values) => {
@@ -126,18 +132,24 @@ export const createCar = (values) => {
     });
 };
 
-export const fetchOtherUsersCars = ({
-  isLoading, setIsLoading, setCarList, userId,
-}) => {
-  if (isLoading) {
-    const headers = { 'Content-Type': 'application/json', token: getCookie('token') };
-    get(`${URL}/api/carinformation/get-users-cars/${userId}`, { headers })
-      .then(({ data }) => {
-        setIsLoading(false);
-        setCarList(reverse(data));
-      })
-      .catch((error) => console.log(error));
-  }
+// export const fetchOtherUsersCars = ({
+//   isLoading, setIsLoading, setCarList, userId,
+// }) => {
+//   if (isLoading) {
+//     const headers = { 'Content-Type': 'application/json', token: getCookie('token') };
+//     get(`${URL}/api/carinformation/get-users-cars/${userId}`, { headers })
+//       .then(({ data }) => {
+//         setIsLoading(false);
+//         setCarList(reverse(data));
+//       })
+//       .catch((error) => console.log(error));
+//   }
+// };
+
+export const fetchOtherUsersCars = (userId) => {
+  const headers = { 'Content-Type': 'application/json', token: getCookie('token') };
+  return get(`${URL}/api/carinformation/get-users-cars/${userId}`, { headers })
+    .catch((error) => console.log(error));
 };
 
 export const fetchCarInfo = ({
