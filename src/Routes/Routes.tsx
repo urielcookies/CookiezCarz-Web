@@ -66,6 +66,7 @@ const Routes: FC = () => {
   const MainContent = withContainerUI(AppRoutes);
   const isMobile = toLower(window.navigator.userAgent).match(/mobile/i);
   const Footer = hasCookie && isMobile && <MobileFooterNavigation />;
+
   return (
     <>
       <Navbar />
