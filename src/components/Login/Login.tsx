@@ -43,6 +43,7 @@ const Login: FC<LoginProps> = ({ theme }) => {
     onSubmit: async (values) => {
       setSubmitLoading(true);
       const JWTResponse = await loginUser(values);
+      setSubmitLoading(false);
       if (isUndefined(JWTResponse)) setErrorMessage('Wrong email or password');
       else {
         writeCookie('token', JWTResponse.data);
@@ -50,7 +51,6 @@ const Login: FC<LoginProps> = ({ theme }) => {
         setActiveUserUpdate(userResponse.data as ActiveUser);
         push('/home');
       }
-      setSubmitLoading(false);
     },
   });
 
