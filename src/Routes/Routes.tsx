@@ -40,6 +40,7 @@ const Routes: FC = () => {
         setIsLoading(false);
       }
     };
+
     fetchUser();
   }, []);
 

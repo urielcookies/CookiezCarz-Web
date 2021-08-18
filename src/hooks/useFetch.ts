@@ -18,8 +18,6 @@ const useFetch = (method: Function, dataSent: any) => {
     };
 
     fetchMyAPI();
-
-    return () => setData(null);
   }, []);
 
   return {
