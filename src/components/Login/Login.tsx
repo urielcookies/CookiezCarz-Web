@@ -24,10 +24,6 @@ import LoginStyle from './LoginStyle';
 import { fetchActiveUser, loginUser, writeCookie } from '../../endpoints';
 import { ActiveUser, useActiveUserUpdate } from '../../context/ActiveUserContext';
 
-interface LoginProps {
-  theme: Theme;
-}
-
 const Login: FC<LoginProps> = ({ theme }) => {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
@@ -128,6 +124,10 @@ const Login: FC<LoginProps> = ({ theme }) => {
     </LoginStyle>
   );
 };
+
+interface LoginProps {
+  theme: Theme;
+}
 
 export default compose(
   withTheme,
