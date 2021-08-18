@@ -6,6 +6,7 @@ import { Card, CardHeader } from '@material-ui/core';
 import { FolderSharedOutlined } from '@material-ui/icons';
 
 import HomeStyle from './HomeStyle';
+import PageLoad from '../PageLoad/PageLoad';
 
 import { ActiveUser, useActiveUser } from '../../context/ActiveUserContext';
 import useFetch from '../../hooks/useFetch';
@@ -15,6 +16,8 @@ const Home: FC = () => {
   const activeUser = useActiveUser();
   const users = useFetch(fetchUsers, null);
   const { push } = useHistory();
+
+  if (users.isLoading) return <PageLoad />;
 
   return (
     <HomeStyle>

@@ -87,13 +87,11 @@
 			"single"
 		],
 		"max-len": [
-			2,
+			"error",
 			{
-				"code": 80,
+				"code": 100,
 				"ignoreComments": true,
-				"ignoreTrailingComments": true,
-				"ignoreUrls": true,
-				"ignorePattern": true
+				"ignoreTrailingComments": true
 			}
 		],
 		"react/destructuring-assignment": [

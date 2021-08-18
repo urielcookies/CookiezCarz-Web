@@ -106,7 +106,9 @@ const Login: FC<LoginProps> = ({ theme }) => {
                 className="submit"
                 type="submit"
               >
-                {submitLoading ? <CircularProgress color="secondary" className="loadingSpinner" size={24} /> : 'Sign In'}
+                {submitLoading
+                  ? <CircularProgress color="secondary" className="loadingSpinner" size={24} />
+                  : 'Sign In'}
               </Button>
               <Box mt={5}>
                 <Typography variant="body2" color="textSecondary" align="center">
