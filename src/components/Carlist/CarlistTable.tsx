@@ -33,7 +33,7 @@ const CarlistTable: FC<CarlistTableProps> = ({ path, rows }) => (
             <TableCell align="center">{row.Brand}</TableCell>
             <TableCell align="center">
               <Link to={path(row)}>
-                <AssignmentOutlined style={{ fontSize: '1.7rem' }} />
+                <AssignmentOutlined color="primary" style={{ fontSize: '1.7rem' }} />
               </Link>
             </TableCell>
           </TableRow>
