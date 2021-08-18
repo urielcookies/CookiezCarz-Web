@@ -29,18 +29,20 @@ const Carlist: FC = () => {
 
   return (
     <CarlistStyle>
-      <Button
-        className="add-car-btn"
-        fullWidth
-        color="primary"
-        variant="outlined"
-        onClick={() => push('/home/mycarlist/addcar')}
-      >
-        Add New Car
-      </Button>
+      {carListOwner && (
+        <Button
+          className="add-car-btn"
+          fullWidth
+          color="primary"
+          variant="outlined"
+          onClick={() => push('/home/mycarlist/addcar')}
+        >
+          Add New Car
+        </Button>
+      )}
       <div className="divider" />
       {!isEmpty(carlistData) && (
-        <div className="carlist-tbl">
+        <div className={carListOwner ? 'carlist-tbl' : 'carlist-tbl-notowner'}>
           <CarlistTable rows={reverse(carlistData)} path={path} />
         </div>
       )}

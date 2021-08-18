@@ -15,6 +15,11 @@ const CarlistStyle = styled.div`
     height: 93%;
     overflow-y: auto;
   }
+
+  .carlist-tbl-notowner {
+    height: 98%;
+    overflow-y: auto;
+  }
 `;
 
 export default CarlistStyle;
