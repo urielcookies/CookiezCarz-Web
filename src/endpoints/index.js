@@ -73,18 +73,24 @@ export const fetchActiveAccount = ({ isActiveLoading, setIsActiveAccountLoading,
   }
 };
 
-export const fetchCarExpenses = ({
-  isCarExpensesLoading, setIsCarExpensesLoading, setCarExpenses, carInfoId,
-}) => {
-  if (isCarExpensesLoading) {
-    const headers = { 'Content-Type': 'application/json', token: getCookie('token') };
-    get(`${URL}/api/carexpenses/${carInfoId}`, { headers })
-      .then(({ data }) => {
-        setIsCarExpensesLoading(false);
-        setCarExpenses(reverse(data));
-      })
-      .catch((error) => console.log(error));
-  }
+// export const fetchCarExpenses = ({
+//   isCarExpensesLoading, setIsCarExpensesLoading, setCarExpenses, carInfoId,
+// }) => {
+//   if (isCarExpensesLoading) {
+//     const headers = { 'Content-Type': 'application/json', token: getCookie('token') };
+//     get(`${URL}/api/carexpenses/${carInfoId}`, { headers })
+//       .then(({ data }) => {
+//         setIsCarExpensesLoading(false);
+//         setCarExpenses(reverse(data));
+//       })
+//       .catch((error) => console.log(error));
+//   }
+// };
+
+export const fetchCarExpenses = (carInfoId) => {
+  const headers = { 'Content-Type': 'application/json', token: getCookie('token') };
+  return get(`${URL}/api/carexpenses/${carInfoId}`, { headers })
+    .catch((error) => console.log(error));
 };
 
 // export const fetchUsers = ({ isUsersLoading, setIsUsersLoading, setUsers }) => {
@@ -152,20 +158,26 @@ export const fetchOtherUsersCars = (userId) => {
     .catch((error) => console.log(error));
 };
 
-export const fetchCarInfo = ({
-  carInfoId, isCarInfoLoading, setIsCarInfoLoading, setCarInfo,
-}) => {
-  if (isCarInfoLoading) {
-    const headers = { 'Content-Type': 'application/json', token: getCookie('token') };
-    get(`${URL}/api/carinformation/get-carinfo/${carInfoId}`, { headers })
-      .then(({ data }) => {
-        setIsCarInfoLoading(false);
-        setCarInfo(data || {});
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+// export const fetchCarInfo = ({
+//   carInfoId, isCarInfoLoading, setIsCarInfoLoading, setCarInfo,
+// }) => {
+//   if (isCarInfoLoading) {
+//     const headers = { 'Content-Type': 'application/json', token: getCookie('token') };
+//     get(`${URL}/api/carinformation/get-carinfo/${carInfoId}`, { headers })
+//       .then(({ data }) => {
+//         setIsCarInfoLoading(false);
+//         setCarInfo(data || {});
+//       })
+//       .catch((error) => {
+//         console.log(error);
+//       });
+//   }
+// };
+
+export const fetchCarInfo = (carInfoId) => {
+  const headers = { 'Content-Type': 'application/json', token: getCookie('token') };
+  return get(`${URL}/api/carinformation/get-carinfo/${carInfoId}`, { headers })
+    .catch((error) => console.log(error));
 };
 
 export const updateCarInfo = (carInfo, setIsCarInfoLoading) => {
@@ -290,32 +302,44 @@ export const hasSubscription = (setNotifications) => {
   }
 };
 
-export const fetchCarImages = ({
-  isImagesLoaded, setIsImagesLoaded, setCarImages, carInfoId,
-}) => {
-  if (isImagesLoaded) {
-    const headers = { 'Content-Type': 'application/json', token: getCookie('token') };
-    get(`${URL}/api/carimages/getcars/${carInfoId}`, { headers })
-      .then(({ data }) => {
-        setIsImagesLoaded(false);
-        setCarImages(data);
-      })
-      .catch((error) => console.log(error));
-  }
+// export const fetchCarImages = ({
+//   isImagesLoaded, setIsImagesLoaded, setCarImages, carInfoId,
+// }) => {
+//   if (isImagesLoaded) {
+//     const headers = { 'Content-Type': 'application/json', token: getCookie('token') };
+//     get(`${URL}/api/carimages/getcars/${carInfoId}`, { headers })
+//       .then(({ data }) => {
+//         setIsImagesLoaded(false);
+//         setCarImages(data);
+//       })
+//       .catch((error) => console.log(error));
+//   }
+// };
+
+export const fetchCarImages = (carInfoId) => {
+  const headers = { 'Content-Type': 'application/json', token: getCookie('token') };
+  return get(`${URL}/api/carimages/getcars/${carInfoId}`, { headers })
+    .catch((error) => console.log(error));
 };
 
-export const fetchCarStatus = ({
-  isCarStatusLoading, setIsCarStatusLoading, setCarStatus, carInfoId,
-}) => {
-  if (isCarStatusLoading) {
-    const headers = { 'Content-Type': 'application/json', token: getCookie('token') };
-    get(`${URL}/api/carstatus/${carInfoId}`, { headers })
-      .then(({ data }) => {
-        setIsCarStatusLoading(false);
-        setCarStatus(data);
-      })
-      .catch((error) => console.log(error));
-  }
+// export const fetchCarStatus = ({
+//   isCarStatusLoading, setIsCarStatusLoading, setCarStatus, carInfoId,
+// }) => {
+//   if (isCarStatusLoading) {
+//     const headers = { 'Content-Type': 'application/json', token: getCookie('token') };
+//     get(`${URL}/api/carstatus/${carInfoId}`, { headers })
+//       .then(({ data }) => {
+//         setIsCarStatusLoading(false);
+//         setCarStatus(data);
+//       })
+//       .catch((error) => console.log(error));
+//   }
+// };
+
+export const fetchCarStatus = (carInfoId) => {
+  const headers = { 'Content-Type': 'application/json', token: getCookie('token') };
+  return get(`${URL}/api/carstatus/${carInfoId}`, { headers })
+    .catch((error) => console.log(error));
 };
 
 export const updateCarStatus = (carStatus, setIsCarStatusLoading) => {
@@ -329,18 +353,24 @@ export const updateCarStatus = (carStatus, setIsCarStatusLoading) => {
     });
 };
 
-export const fetchUserPermission = ({
-  isUserPermissionsLoaded, setIsUserPermissionsLoaded, setUserHasWritePermissions, carInfoId,
-}) => {
-  if (isUserPermissionsLoaded) {
-    const headers = { 'Content-Type': 'application/json', token: getCookie('token') };
-    get(`${URL}/api/caraccess/get-permissions/${carInfoId}`, { headers })
-      .then(({ data }) => {
-        setIsUserPermissionsLoaded(false);
-        setUserHasWritePermissions(data);
-      })
-      .catch((error) => console.log(error));
-  }
+// export const fetchUserPermission = ({
+//   isUserPermissionsLoaded, setIsUserPermissionsLoaded, setUserHasWritePermissions, carInfoId,
+// }) => {
+//   if (isUserPermissionsLoaded) {
+//     const headers = { 'Content-Type': 'application/json', token: getCookie('token') };
+//     get(`${URL}/api/caraccess/get-permissions/${carInfoId}`, { headers })
+//       .then(({ data }) => {
+//         setIsUserPermissionsLoaded(false);
+//         setUserHasWritePermissions(data);
+//       })
+//       .catch((error) => console.log(error));
+//   }
+// };
+
+export const fetchUserPermission = (carInfoId) => {
+  const headers = { 'Content-Type': 'application/json', token: getCookie('token') };
+  return get(`${URL}/api/caraccess/get-permissions/${carInfoId}`, { headers })
+    .catch((error) => console.log(error));
 };
 
 export const deleteCarInformation = (carInfoId, setIsCarExpensesLoading) => {

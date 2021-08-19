@@ -4,7 +4,7 @@ import { useHistory, useParams } from 'react-router-dom';
 
 import { Button } from '@material-ui/core';
 
-import { CarlistTable, Row } from './CarlistTable';
+import { CarlistTable, CarInformation } from './CarlistTable';
 import CarlistStyle from './CarlistStyle';
 import PageLoad from '../PageLoad/PageLoad';
 
@@ -18,9 +18,9 @@ const Carlist: FC = () => {
   const carListOwner = isUndefined(userId);
   const callback = carListOwner ? fetchCars : fetchOtherUsersCars;
   const carlist = useFetch(callback, userId);
-  const carlistData = carlist.data as unknown as Row[];
+  const carlistData = carlist.data as unknown as CarInformation[];
 
-  const path = ({ Id, UserAccountId }: Row) => {
+  const path = ({ Id, UserAccountId }: CarInformation) => {
     const link = carListOwner ? 'mycarlist' : 'carlist';
     return `/home/${link}/${UserAccountId}/${Id}/info`;
   };

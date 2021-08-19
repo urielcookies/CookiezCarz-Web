@@ -26,13 +26,18 @@ const CarlistTable: FC<CarlistTableProps> = ({ path, rows }) => (
         </TableRow>
       </TableHead>
       <TableBody>
-        {map(rows, (row: Row) => (
+        {map(rows, (row: CarInformation) => (
           <TableRow key={row.Id}>
             <TableCell align="center">{row.Year}</TableCell>
             <TableCell align="center">{row.Model}</TableCell>
             <TableCell align="center">{row.Brand}</TableCell>
             <TableCell align="center">
-              <Link to={path(row)}>
+              <Link
+                to={{
+                  pathname: path(row),
+                  state: row,
+                }}
+              >
                 <AssignmentOutlined color="primary" style={{ fontSize: '1.7rem' }} />
               </Link>
             </TableCell>
@@ -45,10 +50,10 @@ const CarlistTable: FC<CarlistTableProps> = ({ path, rows }) => (
 
 interface CarlistTableProps {
   path: Function;
-  rows: Row[];
+  rows: CarInformation[];
 }
 
-interface Row {
+interface CarInformation {
   Id: number;
   Brand: string;
   Model: string;
@@ -57,4 +62,4 @@ interface Row {
 }
 
 export { CarlistTable };
-export type { Row };
+export type { CarInformation };

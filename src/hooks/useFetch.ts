@@ -1,12 +1,14 @@
+import { isNull } from 'lodash';
 import { useEffect, useState } from 'react';
 
-const useFetch = (method: Function, dataSent: any) => {
+const useFetch = (method: Function | null, dataSent: any) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoadingLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchMyAPI = async () => {
+      if (isNull(method)) return;
       try {
         const response = await method(dataSent);
         setData(response.data);
