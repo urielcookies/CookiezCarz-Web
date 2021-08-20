@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useHistory } from 'react-router-dom';
-import { map } from 'lodash';
+import { isNull, map } from 'lodash';
 
 import { Card, CardHeader } from '@material-ui/core';
 import { FolderSharedOutlined } from '@material-ui/icons';
@@ -13,11 +13,11 @@ import useFetch from '../../hooks/useFetch';
 import { fetchUsers } from '../../endpoints';
 
 const Home: FC = () => {
-  const activeUser = useActiveUser();
+  const activeUser = useActiveUser() as ActiveUser;
   const users = useFetch(fetchUsers, null);
   const { push } = useHistory();
 
-  if (users.isLoading) return <PageLoad />;
+  if (isNull(activeUser) || users.isLoading) return <PageLoad />;
 
   return (
     <HomeStyle>
@@ -28,8 +28,8 @@ const Home: FC = () => {
           </div>
           <CardHeader
             className="cardHeader"
-            title={activeUser?.Username}
-            subheader={activeUser?.Email}
+            title={activeUser.Username}
+            subheader={activeUser.Email}
           />
         </Card>
 

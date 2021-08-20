@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { isUndefined, noop } from 'lodash';
+import { isNull, isUndefined, noop } from 'lodash';
 import { useLocation, useParams } from 'react-router-dom';
 
 import { AppBar, Tab, Tabs } from '@material-ui/core';
@@ -44,11 +44,12 @@ const DetailsForm = () => {
   const statuses = useFetch(fetchCarStatus, carInfoId);
   const userHasWritePermissions = useFetch(fetchUserPermission, carInfoId);
 
-  const isLoading = isUndefined(informationRouterState) ? fetchedInformation.isLoading : false
-    && expenses.isLoading
-    && images.isLoading
-    && statuses.isLoading
-    && userHasWritePermissions.isLoading;
+  const isLoading = (isUndefined(informationRouterState) && fetchedInformation.isLoading)
+    || expenses.isLoading
+    || images.isLoading
+    || statuses.isLoading
+    || userHasWritePermissions.isLoading
+    || isNull(activeUser);
 
   if (isLoading) return <PageLoad />;
 

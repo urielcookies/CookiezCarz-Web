@@ -52,14 +52,14 @@ const Routes: FC = () => {
           <Route exact path="/login" component={Login} />
           <Route exact path="/home" component={withLoginAuthentication(Home)} />
           <Route exact path="/details/:id/:tab" component={withLoginAuthentication(DetailsForm)} />
-          <Route exact path="/home/settings" component={withLoginAuthentication(Settings)} />
-          <Route exact path="/home/:carlist" component={withLoginAuthentication(Carlist)} />
-          <Route exact path="/home/:carlist/:userId" component={withLoginAuthentication(Carlist)} />
           <Route
             exact
             path="/home/mycarlist/addcar"
             component={withLoginAuthentication(AddCarForm)}
           />
+          <Route exact path="/home/settings" component={withLoginAuthentication(Settings)} />
+          <Route exact path="/home/:carlist" component={withLoginAuthentication(Carlist)} />
+          <Route exact path="/home/:carlist/:userId" component={withLoginAuthentication(Carlist)} />
           <Route
             exact
             path="/home/:carlist/:userId/:carInfoId/:tab"
