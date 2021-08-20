@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
-import {
-  isEqual, isNull, isUndefined, noop,
-} from 'lodash';
+import { FC, ChangeEvent, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
+import {
+  isEqual,
+  isNull,
+  isUndefined,
+  noop,
+} from 'lodash';
 
 import { AppBar, Tab, Tabs } from '@material-ui/core';
 
@@ -26,7 +29,7 @@ import {
   fetchUserPermission,
 } from '../../endpoints';
 
-const DetailsForm = () => {
+const DetailsForm: FC = () => {
   const activeUser = useActiveUser() as ActiveUser;
   const { pathname, state: informationRouterState } = useLocation<CarInformation>();
   const { carInfoId, tab } = useParams<ParamTypes>();
@@ -55,7 +58,7 @@ const DetailsForm = () => {
 
   if (isLoading) return <PageLoad />;
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+  const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
     setPageIndex(newValue);
     const path = pathname.substring(0, pathname.lastIndexOf('/'));
     window.history.pushState({}, '', `${path}/${tabs[newValue]}`);
@@ -63,7 +66,7 @@ const DetailsForm = () => {
 
   return (
     <DetailFormStyle>
-      <AppBar position="static" color="default">
+      <AppBar id="appbar" position="static" color="default">
         <Tabs
           value={pageIndex}
           onChange={handleChange}
@@ -83,13 +86,13 @@ const DetailsForm = () => {
       {isEqual(pageIndex, 0) && (
         <TabPanel value={pageIndex} index={0}>
           <Information
-            {...information}
-            edit={false}
-            activeUserId={activeUser.Id}
-            isCarInfoLoading={false}
-            userHasWritePermissions={userHasWritePermissions.data}
-            setIsCarInfoLoading={noop}
-            carId={carInfoId}
+            // {...information}
+            // edit={false}
+            // activeUserId={activeUser.Id}
+            // isCarInfoLoading={false}
+            userHasWritePermissions={userHasWritePermissions.data as unknown as boolean}
+          // setIsCarInfoLoading={noop}
+          // carId={carInfoId}
           />
         </TabPanel>
       )}

@@ -2,14 +2,12 @@ import { ReactNode } from 'react';
 
 const TabPanel = ({ children, index, value }: TabPanelProps) => (
   <div
+    id="tab-panel"
     role="tabpanel"
     hidden={value !== index}
-    id={`scrollable-auto-tabpanel-${index}`}
     aria-labelledby={`scrollable-auto-tab-${index}`}
   >
-    {value === index && (
-      <div>{children}</div>
-    )}
+    {value === index && children}
   </div>
 );
 
