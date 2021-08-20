@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { isNull, isUndefined, noop } from 'lodash';
+import {
+  isEqual, isNull, isUndefined, noop,
+} from 'lodash';
 import { useLocation, useParams } from 'react-router-dom';
 
 import { AppBar, Tab, Tabs } from '@material-ui/core';
@@ -78,50 +80,60 @@ const DetailsForm = () => {
           <Tab label="Status" />
         </Tabs>
       </AppBar>
-      <TabPanel value={pageIndex} index={0}>
-        <Information
-          {...information}
-          edit={false}
-          activeUserId={activeUser.Id}
-          isCarInfoLoading={false}
-          userHasWritePermissions={userHasWritePermissions.data}
-          setIsCarInfoLoading={noop}
-          carId={carInfoId}
-        />
-      </TabPanel>
-      <TabPanel value={pageIndex} index={1}>
-        <CarExpenses
-          userHasWritePermissions={userHasWritePermissions.data}
-          expenses={expenses.data}
-          carId={carInfoId}
-          setCarExpenses={noop}
-          setIsCarExpensesLoading={noop}
-          Cost={information.Cost}
-          isCarExpensesLoading={false}
-        />
-      </TabPanel>
-      <TabPanel value={pageIndex} index={2}>
-        <CarEstimations cost={information.Cost} expenses={expenses.data} />
-      </TabPanel>
-      <TabPanel value={pageIndex} index={3}>
-        <Status
-          {...statuses.data}
-          userHasWritePermissions={userHasWritePermissions.data}
-          carExpenses={expenses.data}
-          carCost={information.Cost}
-          CarInformationId={carInfoId}
-          setIsCarStatusLoading={noop}
-        />
-      </TabPanel>
-      <TabPanel value={pageIndex} index={4}>
-        <CarImages
-          // carImages={images}
-          // carId={carInfoId}
-          // isImagesLoaded
-          // setIsImagesLoaded={noop}
-          userHasWritePermissions={userHasWritePermissions.data}
-        />
-      </TabPanel>
+      {isEqual(pageIndex, 0) && (
+        <TabPanel value={pageIndex} index={0}>
+          <Information
+            {...information}
+            edit={false}
+            activeUserId={activeUser.Id}
+            isCarInfoLoading={false}
+            userHasWritePermissions={userHasWritePermissions.data}
+            setIsCarInfoLoading={noop}
+            carId={carInfoId}
+          />
+        </TabPanel>
+      )}
+      {isEqual(pageIndex, 1) && (
+        <TabPanel value={pageIndex} index={1}>
+          <CarExpenses
+            userHasWritePermissions={userHasWritePermissions.data}
+            expenses={expenses.data}
+            carId={carInfoId}
+            setCarExpenses={noop}
+            setIsCarExpensesLoading={noop}
+            Cost={information.Cost}
+            isCarExpensesLoading={false}
+          />
+        </TabPanel>
+      )}
+      {isEqual(pageIndex, 2) && (
+        <TabPanel value={pageIndex} index={2}>
+          <CarEstimations cost={information.Cost} expenses={expenses.data} />
+        </TabPanel>
+      )}
+      {isEqual(pageIndex, 3) && (
+        <TabPanel value={pageIndex} index={3}>
+          <Status
+            {...statuses.data}
+            userHasWritePermissions={userHasWritePermissions.data}
+            carExpenses={expenses.data}
+            carCost={information.Cost}
+            CarInformationId={carInfoId}
+            setIsCarStatusLoading={noop}
+          />
+        </TabPanel>
+      )}
+      {isEqual(pageIndex, 4) && (
+        <TabPanel value={pageIndex} index={4}>
+          <CarImages
+            // carImages={images}
+            // carId={carInfoId}
+            // isImagesLoaded
+            // setIsImagesLoaded={noop}
+            userHasWritePermissions={userHasWritePermissions.data}
+          />
+        </TabPanel>
+      )}
     </DetailFormStyle>
   );
 };
