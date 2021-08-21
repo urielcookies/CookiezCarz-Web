@@ -6,7 +6,7 @@ import InformationTable from './InformationTable';
 import InformationForm from './InformationForm';
 import InformationStyle from './InformationStyle';
 
-import CarInformation from '../interfaces';
+import { CarInformation } from '../interfaces';
 
 const Information: FC<InformationProps> = ({ carInformation, userHasWritePermissions }) => {
   const [editMode, setEditMode] = useState<boolean>(false);

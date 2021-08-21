@@ -14,7 +14,7 @@ import {
   TableRow,
 } from '@material-ui/core';
 
-import CarInformation from '../interfaces';
+import { CarInformation } from '../interfaces';
 
 const InformationTable: FC<InformationTableProps> = ({ carInformation }) => {
   const [showNotes, setShowNotes] = useState<boolean>(false);

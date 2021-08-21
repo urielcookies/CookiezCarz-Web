@@ -29,7 +29,7 @@ import {
   fetchUserPermission,
 } from '../../endpoints';
 
-import CarInformation from './interfaces';
+import { CarInformation, CarExpense, CarStatus } from './interfaces';
 
 const DetailsForm: FC = () => {
   const activeUser = useActiveUser() as ActiveUser;
@@ -38,7 +38,7 @@ const DetailsForm: FC = () => {
 
   const tabs = ['info', 'expenses', 'data', 'status', 'images'];
   const [pageIndex, setPageIndex] = useState<number>(
-    ['info', 'expenses', 'data', 'pics', 'status'].indexOf(tab),
+    ['info', 'expenses', 'data', 'status', 'images'].indexOf(tab),
   );
 
   const callback = isUndefined(informationRouterState) ? fetchCarInfo : null;
@@ -66,6 +66,14 @@ const DetailsForm: FC = () => {
     window.history.pushState({}, '', `${path}/${tabs[newValue]}`);
   };
 
+  const data = {
+    information,
+    expenses: expenses.data as unknown as CarExpense[],
+    images: images.data as unknown as string[],
+    statuses: statuses.data as unknown as CarStatus[],
+    userHasWritePermissions: userHasWritePermissions.data as unknown as boolean,
+  };
+
   return (
     <DetailFormStyle>
       <AppBar id="appbar" position="static" color="default">
@@ -88,13 +96,8 @@ const DetailsForm: FC = () => {
       {isEqual(pageIndex, 0) && (
         <TabPanel value={pageIndex} index={0}>
           <Information
-            carInformation={information}
-            // edit={false}
-            // activeUserId={activeUser.Id}
-            // isCarInfoLoading={false}
-            userHasWritePermissions={userHasWritePermissions.data as unknown as boolean}
-          // setIsCarInfoLoading={noop}
-          // carId={carInfoId}
+            carInformation={data.information}
+            userHasWritePermissions={data.userHasWritePermissions}
           />
         </TabPanel>
       )}
