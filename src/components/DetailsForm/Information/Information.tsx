@@ -22,7 +22,7 @@ const Information: FC<InformationProps> = ({ carInformation, userHasWritePermiss
             color="primary"
             onClick={() => setEditMode(!editMode)}
           >
-            Edit Information
+            {editMode ? 'Exit Editing' : 'Edit Information'}
           </Button>
         </>
       )}

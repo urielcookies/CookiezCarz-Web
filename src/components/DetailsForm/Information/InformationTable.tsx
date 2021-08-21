@@ -1,4 +1,6 @@
 import { FC, useState } from 'react';
+import { isEqual } from 'lodash';
+
 import {
   Button,
   Dialog,
@@ -68,17 +70,10 @@ const InformationTable: FC<InformationTableProps> = ({ carInformation }) => {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">
-            {carInformation.Year}
-            &nbsp;
-            {carInformation.Model}
-            &nbsp;
-            {carInformation.Brand}
-            &nbsp;Notes
-          </DialogTitle>
+          <DialogTitle id="alert-dialog-title">Notes</DialogTitle>
           <DialogContent>
             <DialogContentText style={{ whiteSpace: 'pre' }}>
-              {carInformation.Notes}
+              {isEqual(carInformation.Notes, '') ? 'No Notes Been Made' : carInformation.Notes}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
