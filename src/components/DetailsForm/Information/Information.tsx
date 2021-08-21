@@ -6,7 +6,9 @@ import InformationTable from './InformationTable';
 import InformationForm from './InformationForm';
 import InformationStyle from './InformationStyle';
 
-const Information: FC<InformationProps> = ({ userHasWritePermissions }) => {
+import CarInformation from '../interfaces';
+
+const Information: FC<InformationProps> = ({ carInformation, userHasWritePermissions }) => {
   const [editMode, setEditMode] = useState<boolean>(false);
   return (
     <InformationStyle>
@@ -27,10 +29,10 @@ const Information: FC<InformationProps> = ({ userHasWritePermissions }) => {
 
       <div className="divider" />
 
-      <section className={editMode ? 'info-sec' : 'info-sec-nopermission'}>
+      <section className={userHasWritePermissions ? 'info-sec' : 'info-sec-nopermission'}>
         {editMode
           ? <InformationForm />
-          : <InformationTable />}
+          : <InformationTable carInformation={carInformation} />}
       </section>
     </InformationStyle>
   );
@@ -38,6 +40,7 @@ const Information: FC<InformationProps> = ({ userHasWritePermissions }) => {
 
 interface InformationProps {
   userHasWritePermissions: boolean;
+  carInformation: CarInformation;
 }
 
 export default Information;

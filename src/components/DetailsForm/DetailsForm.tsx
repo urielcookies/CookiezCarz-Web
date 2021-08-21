@@ -29,6 +29,8 @@ import {
   fetchUserPermission,
 } from '../../endpoints';
 
+import CarInformation from './interfaces';
+
 const DetailsForm: FC = () => {
   const activeUser = useActiveUser() as ActiveUser;
   const { pathname, state: informationRouterState } = useLocation<CarInformation>();
@@ -86,7 +88,7 @@ const DetailsForm: FC = () => {
       {isEqual(pageIndex, 0) && (
         <TabPanel value={pageIndex} index={0}>
           <Information
-            // {...information}
+            carInformation={information}
             // edit={false}
             // activeUserId={activeUser.Id}
             // isCarInfoLoading={false}
@@ -144,15 +146,6 @@ const DetailsForm: FC = () => {
 interface ParamTypes {
   carInfoId: string;
   tab: string;
-}
-
-interface CarInformation {
-  Id: number;
-  Brand: string;
-  Cost: number;
-  Model: string;
-  UserAccountId: number;
-  Year: string;
 }
 
 export default DetailsForm;
