@@ -32,6 +32,10 @@ const InformationStyle = styled.div`
     width: 75%;
     text-align: center;
   }
+
+  #line-1 {
+    display: flex;
+  }
 `;
 
 export default InformationStyle;
