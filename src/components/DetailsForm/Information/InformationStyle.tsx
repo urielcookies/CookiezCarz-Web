@@ -33,8 +33,44 @@ const InformationStyle = styled.div`
     text-align: center;
   }
 
-  #line-1 {
+
+  .form-row {
     display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin: 5px 0 5px 0;
+
+    .form-row-chl {
+      flex-basis: 30%;
+    }
+
+    /* Custom, iPhone Retina */ 
+    @media (max-width:480px){
+      flex-direction: column;
+      .form-row-chl {
+        margin: 5px 0 5px 0;
+      }
+    }
+  }
+
+  .sec {
+    margin: 20px 0 20px 0;
+    textarea {
+      width: 100%;
+    }
+  }
+
+  .notes {
+    flex-direction: column;
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: space-evenly;
+
+    .edit-info-btn {
+      flex: 0 1 49%;
+    }
   }
 `;
 

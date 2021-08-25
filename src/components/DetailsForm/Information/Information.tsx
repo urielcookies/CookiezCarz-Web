@@ -10,9 +10,11 @@ import { CarInformation } from '../interfaces';
 
 const Information: FC<InformationProps> = ({ carInformation, userHasWritePermissions }) => {
   const [editMode, setEditMode] = useState<boolean>(false);
+  const setEditModeOff = () => setEditMode(false);
+  const setEditModeOn = () => setEditMode(true);
   return (
     <InformationStyle>
-      {userHasWritePermissions && (
+      {!editMode && userHasWritePermissions && (
         <>
           <div className="divider" />
           <Button
@@ -20,10 +22,36 @@ const Information: FC<InformationProps> = ({ carInformation, userHasWritePermiss
             className="edit-info-btn"
             variant="outlined"
             color="primary"
-            onClick={() => setEditMode(!editMode)}
+            onClick={setEditModeOn}
           >
-            {editMode ? 'Exit Editing' : 'Edit Information'}
+            Edit Information
           </Button>
+        </>
+      )}
+
+      {editMode && (
+        <>
+          <div className="divider" />
+          <div className="form-actions">
+            <Button
+              fullWidth
+              className="edit-info-btn"
+              variant="outlined"
+              color="primary"
+              onClick={setEditModeOff}
+            >
+              Save
+            </Button>
+
+            <Button
+              fullWidth
+              className="edit-info-btn"
+              variant="outlined"
+              onClick={setEditModeOff}
+            >
+              Cancel
+            </Button>
+          </div>
         </>
       )}
 
@@ -31,7 +59,7 @@ const Information: FC<InformationProps> = ({ carInformation, userHasWritePermiss
 
       <section className={userHasWritePermissions ? 'info-sec' : 'info-sec-nopermission'}>
         {editMode
-          ? <InformationForm />
+          ? <InformationForm carInformation={carInformation} />
           : <InformationTable carInformation={carInformation} />}
       </section>
     </InformationStyle>
