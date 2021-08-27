@@ -1,26 +1,82 @@
-import { FC } from 'react';
-
+import { FC, useState } from 'react';
+import { createBrowserHistory } from 'history';
 import {
+  Button,
+  CircularProgress,
   FormControlLabel,
   Switch,
   TextareaAutosize,
   TextField,
 } from '@material-ui/core';
 
+import { useFormik } from 'formik';
 import { CarInformation } from '../interfaces';
 
-const InformationForm: FC<InformationTableProps> = ({ carInformation }) => {
+import { updateCarInfo } from '../../../endpoints';
+
+const InformationForm: FC<InformationTableProps> = ({ carInformation, setEditModeOff }) => {
   const {
     Brand,
     Cost,
     CleanTitle,
+    Id,
     Model,
     Notes,
     Year,
   } = carInformation;
+
+  const [submitLoading, setSubmitLoading] = useState<boolean>(false);
+  const history = createBrowserHistory();
+
+  console.log('history-->', history);
+  const formik = useFormik({
+    initialValues: {
+      Brand,
+      Cost,
+      CleanTitle,
+      Id,
+      Model,
+      Notes,
+      Year,
+    },
+    onSubmit: async (carInfo) => {
+      setSubmitLoading(true);
+      await updateCarInfo(carInfo);
+      setSubmitLoading(false);
+      setEditModeOff();
+    },
+  });
+
+  const handleSubmit = () => formik.handleSubmit();
+
   return (
-    <div>
-      <form noValidate autoComplete="off">
+    <>
+      <div className="form-actions">
+        <Button
+          fullWidth
+          className="edit-info-btn"
+          variant="outlined"
+          color="primary"
+          onClick={handleSubmit}
+        >
+          {submitLoading
+            ? <CircularProgress color="secondary" className="loadingSpinner" size={24} />
+            : 'Save'}
+        </Button>
+
+        <Button
+          fullWidth
+          className="edit-info-btn"
+          variant="outlined"
+          onClick={setEditModeOff}
+        >
+          Cancel
+        </Button>
+      </div>
+
+      <div className="divider" />
+
+      <form noValidate autoComplete="off" onSubmit={formik.handleSubmit}>
         <div className="form-row">
           <TextField
             className="form-row-chl"
@@ -28,7 +84,9 @@ const InformationForm: FC<InformationTableProps> = ({ carInformation }) => {
             label="Year"
             size="small"
             type="number"
-            defaultValue={Year}
+            name="Year"
+            onChange={formik.handleChange}
+            value={formik.values.Year}
           />
           <TextField
             className="form-row-chl"
@@ -36,7 +94,9 @@ const InformationForm: FC<InformationTableProps> = ({ carInformation }) => {
             label="Model"
             size="small"
             type="text"
-            defaultValue={Model}
+            name="Model"
+            onChange={formik.handleChange}
+            value={formik.values.Model}
           />
           <TextField
             className="form-row-chl"
@@ -44,7 +104,9 @@ const InformationForm: FC<InformationTableProps> = ({ carInformation }) => {
             label="Brand"
             size="small"
             type="text"
-            defaultValue={Brand}
+            name="Brand"
+            onChange={formik.handleChange}
+            value={formik.values.Brand}
           />
         </div>
 
@@ -55,26 +117,41 @@ const InformationForm: FC<InformationTableProps> = ({ carInformation }) => {
             label="Cost"
             size="small"
             type="number"
-            defaultValue={Cost}
+            name="Cost"
+            onChange={formik.handleChange}
+            value={formik.values.Cost}
           />
           <FormControlLabel
             value="top"
-            control={<Switch defaultChecked={CleanTitle} color="primary" />}
+            control={(
+              <Switch
+                name="CleanTitle"
+                onChange={formik.handleChange}
+                checked={formik.values.CleanTitle}
+                color="primary"
+              />
+            )}
             label="Clean Title"
           />
         </div>
 
         <div className="form-row sec notes">
           <div>Notes</div>
-          <TextareaAutosize minRows={6} defaultValue={Notes} />
+          <TextareaAutosize
+            minRows={6}
+            name="Notes"
+            onChange={formik.handleChange}
+            value={formik.values.Notes}
+          />
         </div>
       </form>
-    </div>
+    </>
   );
 };
 
 interface InformationTableProps {
   carInformation: CarInformation;
+  setEditModeOff: () => void;
 }
 
 export default InformationForm;

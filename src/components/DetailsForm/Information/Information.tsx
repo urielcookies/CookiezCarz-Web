@@ -29,37 +29,11 @@ const Information: FC<InformationProps> = ({ carInformation, userHasWritePermiss
         </>
       )}
 
-      {editMode && (
-        <>
-          <div className="divider" />
-          <div className="form-actions">
-            <Button
-              fullWidth
-              className="edit-info-btn"
-              variant="outlined"
-              color="primary"
-              onClick={setEditModeOff}
-            >
-              Save
-            </Button>
-
-            <Button
-              fullWidth
-              className="edit-info-btn"
-              variant="outlined"
-              onClick={setEditModeOff}
-            >
-              Cancel
-            </Button>
-          </div>
-        </>
-      )}
-
       <div className="divider" />
 
       <section className={userHasWritePermissions ? 'info-sec' : 'info-sec-nopermission'}>
         {editMode
-          ? <InformationForm carInformation={carInformation} />
+          ? <InformationForm carInformation={carInformation} setEditModeOff={setEditModeOff} />
           : <InformationTable carInformation={carInformation} />}
       </section>
     </InformationStyle>

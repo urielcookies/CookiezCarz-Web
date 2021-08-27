@@ -12,8 +12,12 @@ const InformationStyle = styled.div`
   }
 
   .info-sec {
-    height: 91%;
-    overflow-y: auto;
+    height: 100%;
+
+    form {
+      height: 91%;
+      overflow-y: auto;
+    }
   }
 
   .info-sec-nopermission{

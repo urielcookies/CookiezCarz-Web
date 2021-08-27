@@ -180,14 +180,23 @@ export const fetchCarInfo = (carInfoId) => {
     .catch((error) => console.log(error));
 };
 
-export const updateCarInfo = (carInfo, setIsCarInfoLoading) => {
-  const data = JSON.stringify(carInfo);
+// export const updateCarInfo = (carInfo, setIsCarInfoLoading) => {
+//   const data = JSON.stringify(carInfo);
 
+//   const headers = { 'Content-Type': 'application/json', token: getCookie('token') };
+//   return put(`${URL}/api/carinformation/${carInfo.Id}`, data, { headers })
+//     .then(({ status }) => {
+//       if (status === 200) setIsCarInfoLoading(true);
+//     })
+//     .catch((error) => {
+//       console.log('error', error);
+//     });
+// };
+
+export const updateCarInfo = (carInfo) => {
+  const data = JSON.stringify(carInfo);
   const headers = { 'Content-Type': 'application/json', token: getCookie('token') };
   return put(`${URL}/api/carinformation/${carInfo.Id}`, data, { headers })
-    .then(({ status }) => {
-      if (status === 200) setIsCarInfoLoading(true);
-    })
     .catch((error) => {
       console.log('error', error);
     });
