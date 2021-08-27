@@ -1,5 +1,4 @@
 import { FC, useState } from 'react';
-import { createBrowserHistory } from 'history';
 import {
   Button,
   CircularProgress,
@@ -26,9 +25,7 @@ const InformationForm: FC<InformationTableProps> = ({ carInformation, setEditMod
   } = carInformation;
 
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
-  const history = createBrowserHistory();
 
-  console.log('history-->', history);
   const formik = useFormik({
     initialValues: {
       Brand,
