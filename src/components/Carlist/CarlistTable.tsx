@@ -35,7 +35,6 @@ const CarlistTable: FC<CarlistTableProps> = ({ path, rows }) => (
               <Link
                 to={{
                   pathname: path(row),
-                  state: row,
                 }}
               >
                 <AssignmentOutlined color="primary" style={{ fontSize: '1.7rem' }} />

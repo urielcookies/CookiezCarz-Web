@@ -1,5 +1,4 @@
 import { FC, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import {
   Button,
   CircularProgress,
@@ -10,24 +9,27 @@ import {
 } from '@material-ui/core';
 
 import { useFormik } from 'formik';
-import { cloneDeep } from 'lodash';
 import { CarInformation } from '../interfaces';
 
 import { updateCarInfo } from '../../../endpoints';
 
-const InformationForm: FC<InformationTableProps> = ({ carInformation, setEditModeOff }) => {
+const InformationForm: FC<InformationTableProps> = (props) => {
   const {
-    Brand,
-    Cost,
-    CleanTitle,
-    Id,
-    Model,
-    Notes,
-    Year,
-  } = carInformation;
+    carInformation: {
+      Brand,
+      Cost,
+      CleanTitle,
+      Id,
+      Model,
+      Notes,
+      Year,
+    },
+    setEditModeOff,
+    updateCarStateRouter,
+  } = props;
 
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
-  const { replace } = useHistory();
+
   const formik = useFormik({
     initialValues: {
       Brand,
@@ -43,7 +45,7 @@ const InformationForm: FC<InformationTableProps> = ({ carInformation, setEditMod
       await updateCarInfo(carInfo);
       setSubmitLoading(false);
       setEditModeOff();
-      replace({ state: cloneDeep(carInfo) });
+      updateCarStateRouter(carInfo, 'information');
     },
   });
 
@@ -152,6 +154,7 @@ const InformationForm: FC<InformationTableProps> = ({ carInformation, setEditMod
 interface InformationTableProps {
   carInformation: CarInformation;
   setEditModeOff: () => void;
+  updateCarStateRouter: Function;
 }
 
 export default InformationForm;

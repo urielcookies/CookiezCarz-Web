@@ -8,7 +8,8 @@ import InformationStyle from './InformationStyle';
 
 import { CarInformation } from '../interfaces';
 
-const Information: FC<InformationProps> = ({ carInformation, userHasWritePermissions }) => {
+const Information: FC<InformationProps> = (props) => {
+  const { carInformation, userHasWritePermissions, updateCarStateRouter } = props;
   const [editMode, setEditMode] = useState<boolean>(false);
   const setEditModeOff = () => setEditMode(false);
   const setEditModeOn = () => setEditMode(true);
@@ -33,7 +34,13 @@ const Information: FC<InformationProps> = ({ carInformation, userHasWritePermiss
 
       <section className={userHasWritePermissions ? 'info-sec' : 'info-sec-nopermission'}>
         {editMode
-          ? <InformationForm carInformation={carInformation} setEditModeOff={setEditModeOff} />
+          ? (
+            <InformationForm
+              carInformation={carInformation}
+              setEditModeOff={setEditModeOff}
+              updateCarStateRouter={updateCarStateRouter}
+            />
+          )
           : <InformationTable carInformation={carInformation} />}
       </section>
     </InformationStyle>
@@ -43,6 +50,7 @@ const Information: FC<InformationProps> = ({ carInformation, userHasWritePermiss
 interface InformationProps {
   userHasWritePermissions: boolean;
   carInformation: CarInformation;
+  updateCarStateRouter: Function;
 }
 
 export default Information;

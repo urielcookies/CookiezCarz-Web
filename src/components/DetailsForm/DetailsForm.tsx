@@ -1,9 +1,13 @@
-import { FC, ChangeEvent, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import {
+  FC,
+  ChangeEvent,
+  useEffect,
+  useState,
+} from 'react';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import {
   isEqual,
   isNull,
-  isUndefined,
   noop,
 } from 'lodash';
 
@@ -33,7 +37,8 @@ import { CarInformation, CarExpense, CarStatus } from './interfaces';
 
 const DetailsForm: FC = () => {
   const activeUser = useActiveUser() as ActiveUser;
-  const { pathname, state: informationRouterState } = useLocation<CarInformation>();
+  const { replace } = useHistory();
+  const location = useLocation<RouterCarStateLocation>();
   const { carInfoId, tab } = useParams<ParamTypes>();
 
   const tabs = ['info', 'expenses', 'data', 'status', 'images'];
@@ -41,37 +46,56 @@ const DetailsForm: FC = () => {
     ['info', 'expenses', 'data', 'status', 'images'].indexOf(tab),
   );
 
-  const callback = isUndefined(informationRouterState) ? fetchCarInfo : null;
-  const fetchedInformation = useFetch(callback, carInfoId);
-  const information = isUndefined(informationRouterState)
-    ? fetchedInformation.data as unknown as CarInformation
-    : informationRouterState;
-  const expenses = useFetch(fetchCarExpenses, carInfoId);
-  const images = useFetch(fetchCarImages, carInfoId);
-  const statuses = useFetch(fetchCarStatus, carInfoId);
-  const userHasWritePermissions = useFetch(fetchUserPermission, carInfoId);
+  const information = useFetch(fetchCarInfo, carInfoId) as unknown as CarInformationFetch;
+  const expenses = useFetch(fetchCarExpenses, carInfoId) as unknown as CarExpenseFetch;
+  const images = useFetch(fetchCarImages, carInfoId) as unknown as CarImagesFetch;
+  const statuses = useFetch(fetchCarStatus, carInfoId) as unknown as CarStatusFetch;
+  const userHasWritePermissions = useFetch(fetchUserPermission, carInfoId) as unknown as PermFetch;
 
-  const isLoading = (isUndefined(informationRouterState) && fetchedInformation.isLoading)
+  const isLoading = information.isLoading
     || expenses.isLoading
     || images.isLoading
     || statuses.isLoading
     || userHasWritePermissions.isLoading
     || isNull(activeUser);
 
+  useEffect(() => {
+    location.state = {
+      carState: {
+        information: information.data,
+        expenses: expenses.data,
+        images: images.data,
+        statuses: statuses.data,
+        userHasWritePermissions: userHasWritePermissions.data,
+      },
+    };
+  }, [information, expenses, images, statuses, userHasWritePermissions]);
+
   if (isLoading) return <PageLoad />;
 
   const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
     setPageIndex(newValue);
-    const path = pathname.substring(0, pathname.lastIndexOf('/'));
+    const path = location.pathname.substring(0, location.pathname.lastIndexOf('/'));
     window.history.pushState({}, '', `${path}/${tabs[newValue]}`);
   };
 
-  const data = {
-    information,
-    expenses: expenses.data as unknown as CarExpense[],
-    images: images.data as unknown as string[],
-    statuses: statuses.data as unknown as CarStatus[],
-    userHasWritePermissions: userHasWritePermissions.data as unknown as boolean,
+  const carData = {
+    information: location.state.carState.information,
+    expenses: location.state.carState.expenses,
+    images: location.state.carState.images,
+    statuses: location.state.carState.statuses,
+    userHasWritePermissions: location.state.carState.userHasWritePermissions,
+  };
+
+  const updateCarStateRouter = (state: any, stateType: string) => {
+    replace({
+      state: {
+        carState: {
+          ...location.state.carState,
+          [stateType]: state,
+        },
+      },
+    });
   };
 
   return (
@@ -96,36 +120,37 @@ const DetailsForm: FC = () => {
       {isEqual(pageIndex, 0) && (
         <TabPanel value={pageIndex} index={0}>
           <Information
-            carInformation={data.information}
-            userHasWritePermissions={data.userHasWritePermissions}
+            carInformation={carData.information}
+            userHasWritePermissions={carData.userHasWritePermissions}
+            updateCarStateRouter={updateCarStateRouter}
           />
         </TabPanel>
       )}
       {isEqual(pageIndex, 1) && (
         <TabPanel value={pageIndex} index={1}>
           <CarExpenses
-            userHasWritePermissions={userHasWritePermissions.data}
-            expenses={expenses.data}
+            userHasWritePermissions={carData.userHasWritePermissions}
+            expenses={carData.expenses}
             carId={carInfoId}
             setCarExpenses={noop}
             setIsCarExpensesLoading={noop}
-            Cost={information.Cost}
+            Cost={carData.information.Cost}
             isCarExpensesLoading={false}
           />
         </TabPanel>
       )}
       {isEqual(pageIndex, 2) && (
         <TabPanel value={pageIndex} index={2}>
-          <CarEstimations cost={information.Cost} expenses={expenses.data} />
+          <CarEstimations cost={carData.information.Cost} expenses={carData.expenses} />
         </TabPanel>
       )}
       {isEqual(pageIndex, 3) && (
         <TabPanel value={pageIndex} index={3}>
           <Status
             {...statuses.data}
-            userHasWritePermissions={userHasWritePermissions.data}
-            carExpenses={expenses.data}
-            carCost={information.Cost}
+            userHasWritePermissions={carData.userHasWritePermissions}
+            carExpenses={carData.expenses}
+            carCost={carData.information.Cost}
             CarInformationId={carInfoId}
             setIsCarStatusLoading={noop}
           />
@@ -138,7 +163,7 @@ const DetailsForm: FC = () => {
             // carId={carInfoId}
             // isImagesLoaded
             // setIsImagesLoaded={noop}
-            userHasWritePermissions={userHasWritePermissions.data}
+            userHasWritePermissions={carData.userHasWritePermissions}
           />
         </TabPanel>
       )}
@@ -149,6 +174,39 @@ const DetailsForm: FC = () => {
 interface ParamTypes {
   carInfoId: string;
   tab: string;
+}
+
+interface RouterCarStateLocation {
+  carState: {
+    information: CarInformation;
+    expenses: CarExpense[];
+    images: string[];
+    statuses: CarStatus[];
+    userHasWritePermissions: boolean;
+  }
+}
+
+interface IsLoading {
+  isLoading: boolean;
+}
+
+interface CarInformationFetch extends IsLoading {
+  data: CarInformation;
+}
+interface CarExpenseFetch extends IsLoading {
+  data: CarExpense[];
+}
+
+interface CarImagesFetch extends IsLoading {
+  data: string[];
+}
+
+interface CarStatusFetch extends IsLoading {
+  data: CarStatus[];
+}
+
+interface PermFetch extends IsLoading {
+  data: boolean;
 }
 
 export default DetailsForm;
