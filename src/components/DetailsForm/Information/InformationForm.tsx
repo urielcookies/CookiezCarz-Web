@@ -24,8 +24,8 @@ const InformationForm: FC<InformationTableProps> = (props) => {
       Notes,
       Year,
     },
+    refetchCarData,
     setEditModeOff,
-    updateCarStateRouter,
   } = props;
 
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
@@ -45,7 +45,7 @@ const InformationForm: FC<InformationTableProps> = (props) => {
       await updateCarInfo(carInfo);
       setSubmitLoading(false);
       setEditModeOff();
-      updateCarStateRouter(carInfo, 'information');
+      refetchCarData();
     },
   });
 
@@ -153,8 +153,8 @@ const InformationForm: FC<InformationTableProps> = (props) => {
 
 interface InformationTableProps {
   carInformation: CarInformation;
+  refetchCarData: Function;
   setEditModeOff: () => void;
-  updateCarStateRouter: Function;
 }
 
 export default InformationForm;

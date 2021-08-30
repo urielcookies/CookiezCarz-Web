@@ -1,7 +1,6 @@
 import {
   FC,
   ChangeEvent,
-  useEffect,
   useState,
 } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
@@ -59,43 +58,12 @@ const DetailsForm: FC = () => {
     || userHasWritePermissions.isLoading
     || isNull(activeUser);
 
-  useEffect(() => {
-    location.state = {
-      carState: {
-        information: information.data,
-        expenses: expenses.data,
-        images: images.data,
-        statuses: statuses.data,
-        userHasWritePermissions: userHasWritePermissions.data,
-      },
-    };
-  }, [information, expenses, images, statuses, userHasWritePermissions]);
-
   if (isLoading) return <PageLoad />;
 
   const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
     setPageIndex(newValue);
     const path = location.pathname.substring(0, location.pathname.lastIndexOf('/'));
     window.history.pushState({}, '', `${path}/${tabs[newValue]}`);
-  };
-
-  const carData = {
-    information: location.state.carState.information,
-    expenses: location.state.carState.expenses,
-    images: location.state.carState.images,
-    statuses: location.state.carState.statuses,
-    userHasWritePermissions: location.state.carState.userHasWritePermissions,
-  };
-
-  const updateCarStateRouter = (state: any, stateType: string) => {
-    replace({
-      state: {
-        carState: {
-          ...location.state.carState,
-          [stateType]: state,
-        },
-      },
-    });
   };
 
   return (
@@ -120,37 +88,36 @@ const DetailsForm: FC = () => {
       {isEqual(pageIndex, 0) && (
         <TabPanel value={pageIndex} index={0}>
           <Information
-            carInformation={carData.information}
-            userHasWritePermissions={carData.userHasWritePermissions}
-            updateCarStateRouter={updateCarStateRouter}
+            information={information}
+            userHasWritePermissions={userHasWritePermissions.data}
           />
         </TabPanel>
       )}
       {isEqual(pageIndex, 1) && (
         <TabPanel value={pageIndex} index={1}>
           <CarExpenses
-            userHasWritePermissions={carData.userHasWritePermissions}
-            expenses={carData.expenses}
+            userHasWritePermissions={userHasWritePermissions.data}
+            expenses={expenses.data}
             carId={carInfoId}
             setCarExpenses={noop}
             setIsCarExpensesLoading={noop}
-            Cost={carData.information.Cost}
+            Cost={information.data.Cost}
             isCarExpensesLoading={false}
           />
         </TabPanel>
       )}
       {isEqual(pageIndex, 2) && (
         <TabPanel value={pageIndex} index={2}>
-          <CarEstimations cost={carData.information.Cost} expenses={carData.expenses} />
+          <CarEstimations cost={information.data.Cost} expenses={expenses.data} />
         </TabPanel>
       )}
       {isEqual(pageIndex, 3) && (
         <TabPanel value={pageIndex} index={3}>
           <Status
             {...statuses.data}
-            userHasWritePermissions={carData.userHasWritePermissions}
-            carExpenses={carData.expenses}
-            carCost={carData.information.Cost}
+            userHasWritePermissions={userHasWritePermissions.data}
+            carExpenses={expenses.data}
+            carCost={information.data.Cost}
             CarInformationId={carInfoId}
             setIsCarStatusLoading={noop}
           />
@@ -163,7 +130,7 @@ const DetailsForm: FC = () => {
             // carId={carInfoId}
             // isImagesLoaded
             // setIsImagesLoaded={noop}
-            userHasWritePermissions={carData.userHasWritePermissions}
+            userHasWritePermissions={userHasWritePermissions.data}
           />
         </TabPanel>
       )}
@@ -188,6 +155,7 @@ interface RouterCarStateLocation {
 
 interface IsLoading {
   isLoading: boolean;
+  refetch: Function;
 }
 
 interface CarInformationFetch extends IsLoading {

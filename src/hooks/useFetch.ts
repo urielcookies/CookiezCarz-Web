@@ -6,21 +6,20 @@ const useFetch = (method: Function | null, dataSent: any) => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoadingLoading] = useState<boolean>(true);
 
+  const fetchMyAPI = async () => {
+    if (isNull(method)) return;
+    try {
+      const response = await method(dataSent);
+      setData(response.data);
+      setIsLoadingLoading(false);
+    } catch (e) {
+      setError(e);
+      setIsLoadingLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchMyAPI = async () => {
-      if (isNull(method)) return;
-      try {
-        const response = await method(dataSent);
-        setData(response.data);
-        setIsLoadingLoading(false);
-      } catch (e) {
-        setError(e);
-        setIsLoadingLoading(false);
-      }
-    };
-
     fetchMyAPI();
-
     return () => {
       setData(null);
       setError(null);
@@ -28,10 +27,15 @@ const useFetch = (method: Function | null, dataSent: any) => {
     };
   }, []);
 
+  const refetch = () => {
+    fetchMyAPI();
+  };
+
   return {
     data,
     error,
     isLoading,
+    refetch,
   };
 };
 

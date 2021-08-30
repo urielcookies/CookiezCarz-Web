@@ -9,7 +9,11 @@ import InformationStyle from './InformationStyle';
 import { CarInformation } from '../interfaces';
 
 const Information: FC<InformationProps> = (props) => {
-  const { carInformation, userHasWritePermissions, updateCarStateRouter } = props;
+  const {
+    information: { data, refetch },
+    userHasWritePermissions,
+  } = props;
+
   const [editMode, setEditMode] = useState<boolean>(false);
   const setEditModeOff = () => setEditMode(false);
   const setEditModeOn = () => setEditMode(true);
@@ -36,21 +40,23 @@ const Information: FC<InformationProps> = (props) => {
         {editMode
           ? (
             <InformationForm
-              carInformation={carInformation}
+              carInformation={data}
+              refetchCarData={refetch}
               setEditModeOff={setEditModeOff}
-              updateCarStateRouter={updateCarStateRouter}
             />
           )
-          : <InformationTable carInformation={carInformation} />}
+          : <InformationTable carInformation={data} />}
       </section>
     </InformationStyle>
   );
 };
 
 interface InformationProps {
+  information: {
+    data: CarInformation;
+    refetch: Function
+  };
   userHasWritePermissions: boolean;
-  carInformation: CarInformation;
-  updateCarStateRouter: Function;
 }
 
 export default Information;
