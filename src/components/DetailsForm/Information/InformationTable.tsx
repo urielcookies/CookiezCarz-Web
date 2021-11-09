@@ -69,6 +69,7 @@ const InformationTable: FC<InformationTableProps> = ({ carInformation }) => {
           onClose={setShowNotesHandler}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
+          fullWidth
         >
           <DialogTitle id="alert-dialog-title">Notes</DialogTitle>
           <DialogContent>
