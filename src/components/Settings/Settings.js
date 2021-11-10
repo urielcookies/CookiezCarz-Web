@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { post } from 'axios';
 import {
   Button, Divider, Header, Icon, Modal,
@@ -7,10 +7,12 @@ import {
 import { hasSubscription, writeCookie } from '../../endpoints';
 import { useActiveUserUpdate } from '../../context/ActiveUserContext';
 
-const Settings = ({ history: { push } }) => {
+const Settings = () => {
   const setActiveUserUpdate = useActiveUserUpdate();
   const [openModal, setOpenModal] = useState(false);
   const [notification, setNotifications] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => hasSubscription(setNotifications), []);
 
@@ -84,7 +86,7 @@ const Settings = ({ history: { push } }) => {
   const logout = () => {
     setActiveUserUpdate(null);
     writeCookie('token', '');
-    push('/');
+    navigate('/');
   };
 
   return (
@@ -134,4 +136,4 @@ const Settings = ({ history: { push } }) => {
   );
 };
 
-export default withRouter(Settings);
+export default Settings;

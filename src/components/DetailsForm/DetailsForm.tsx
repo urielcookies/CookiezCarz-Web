@@ -3,7 +3,7 @@ import {
   ChangeEvent,
   useState,
 } from 'react';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import {
   isEqual,
   isNull,
@@ -36,13 +36,12 @@ import { CarInformation, CarExpense, CarStatus } from './interfaces';
 
 const DetailsForm: FC = () => {
   const activeUser = useActiveUser() as ActiveUser;
-  const { replace } = useHistory();
-  const location = useLocation<RouterCarStateLocation>();
-  const { carInfoId, tab } = useParams<ParamTypes>();
+  const location = useLocation();
+  const { carInfoId, tab } = useParams();
 
   const tabs = ['info', 'expenses', 'data', 'status', 'images'];
   const [pageIndex, setPageIndex] = useState<number>(
-    ['info', 'expenses', 'data', 'status', 'images'].indexOf(tab),
+    ['info', 'expenses', 'data', 'status', 'images'].indexOf(tab || 'info'),
   );
 
   const information = useFetch(fetchCarInfo, carInfoId) as unknown as CarInformationFetch;
@@ -137,21 +136,6 @@ const DetailsForm: FC = () => {
     </DetailFormStyle>
   );
 };
-
-interface ParamTypes {
-  carInfoId: string;
-  tab: string;
-}
-
-interface RouterCarStateLocation {
-  carState: {
-    information: CarInformation;
-    expenses: CarExpense[];
-    images: string[];
-    statuses: CarStatus[];
-    userHasWritePermissions: boolean;
-  }
-}
 
 interface IsLoading {
   isLoading: boolean;

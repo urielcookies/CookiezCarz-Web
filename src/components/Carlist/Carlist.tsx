@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { isEmpty, isUndefined, reverse } from 'lodash';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { Button } from '@material-ui/core';
 
@@ -12,8 +12,8 @@ import useFetch from '../../hooks/useFetch';
 import { fetchCars, fetchOtherUsersCars } from '../../endpoints';
 
 const Carlist: FC = () => {
-  const { push } = useHistory();
-  const { userId } = useParams<ParamTypes>();
+  const navigate = useNavigate();
+  const { userId } = useParams();
 
   const carListOwner = isUndefined(userId);
   const callback = carListOwner ? fetchCars : fetchOtherUsersCars;
@@ -35,7 +35,7 @@ const Carlist: FC = () => {
           fullWidth
           color="primary"
           variant="outlined"
-          onClick={() => push('/home/mycarlist/addcar')}
+          onClick={() => navigate('/home/mycarlist/addcar')}
         >
           Add New Car
         </Button>
@@ -49,9 +49,5 @@ const Carlist: FC = () => {
     </CarlistStyle>
   );
 };
-
-interface ParamTypes {
-  userId: string | undefined;
-}
 
 export default Carlist;

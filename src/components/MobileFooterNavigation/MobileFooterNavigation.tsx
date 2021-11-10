@@ -1,18 +1,13 @@
 import { useState, FC } from 'react';
-import { withRouter } from 'react-router-dom';
-import { History } from 'history';
+import { useNavigate } from 'react-router-dom';
 import { Restore, HomeOutlined, Settings } from '@material-ui/icons';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 
 import MobileFooterNavigationPropsStyle from './MobileFooterNavigationStyle';
 
-interface MobileFooterNavigationProps {
-  history: History;
-}
-
-const MobileFooterNavigation: FC<MobileFooterNavigationProps> = ({ history }) => {
-  const { push, goBack } = history;
+const MobileFooterNavigation: FC = () => {
+  const navigate = useNavigate();
   const [value, setValue] = useState<number>(1);
 
   return (
@@ -28,23 +23,23 @@ const MobileFooterNavigation: FC<MobileFooterNavigationProps> = ({ history }) =>
         <BottomNavigationAction
           label="Recents"
           icon={<Restore />}
-          onClick={() => goBack()}
+          onClick={() => navigate(-1)}
         />
 
         <BottomNavigationAction
           label="Home"
           icon={<HomeOutlined />}
-          onClick={() => push('/home')}
+          onClick={() => navigate('/home')}
         />
 
         <BottomNavigationAction
           label="Settings"
           icon={<Settings />}
-          onClick={() => push('/home/settings')}
+          onClick={() => navigate('/home/settings')}
         />
       </BottomNavigation>
     </MobileFooterNavigationPropsStyle>
   );
 };
 
-export default withRouter(MobileFooterNavigation);
+export default MobileFooterNavigation;

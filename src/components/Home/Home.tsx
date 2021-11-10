@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { isNull, map } from 'lodash';
 
 import { Card, CardHeader } from '@material-ui/core';
@@ -15,14 +15,14 @@ import { fetchUsers } from '../../endpoints';
 const Home: FC = () => {
   const activeUser = useActiveUser() as ActiveUser;
   const users = useFetch(fetchUsers, null);
-  const { push } = useHistory();
+  const navigate = useNavigate();
 
   if (isNull(activeUser) || users.isLoading) return <PageLoad />;
 
   return (
     <HomeStyle>
       <div id="outterDiv">
-        <Card className="card" variant="outlined" onClick={() => push('/home/mycarlist')}>
+        <Card className="card" variant="outlined" onClick={() => navigate('/home/mycarlist')}>
           <div className="iconDiv">
             <FolderSharedOutlined style={{ fontSize: 45 }} />
           </div>
@@ -38,7 +38,7 @@ const Home: FC = () => {
             key={user.Id}
             className="card"
             variant="outlined"
-            onClick={() => push(`/home/carlist/${user.Id}`)}
+            onClick={() => navigate(`/home/carlist/${user.Id}`)}
           >
 
             <div className="iconDiv">

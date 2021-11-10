@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Navigate, Route, Routes as ReactRoutes } from 'react-router-dom';
 import { noop, toLower } from 'lodash';
 
 import Navbar from '../components/Navbar/Navbar.js';
@@ -44,30 +44,28 @@ const Routes: FC = () => {
     fetchUser();
   }, []);
 
+  const HomeAuth = withLoginAuthentication(Home);
+  const DetailsAuth = withLoginAuthentication(DetailsForm);
+  const AddCarAuth = withLoginAuthentication(AddCarForm);
+  const SettingsAuth = withLoginAuthentication(Settings);
+  const CarlistAuth = withLoginAuthentication(Carlist);
+
   const AppRoutes = (
     isLoading
       ? <PageLoad />
       : (
-        <Switch>
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/home" component={withLoginAuthentication(Home)} />
-          <Route exact path="/details/:id/:tab" component={withLoginAuthentication(DetailsForm)} />
-          <Route
-            exact
-            path="/home/mycarlist/addcar"
-            component={withLoginAuthentication(AddCarForm)}
-          />
-          <Route exact path="/home/settings" component={withLoginAuthentication(Settings)} />
-          <Route exact path="/home/:carlist" component={withLoginAuthentication(Carlist)} />
-          <Route exact path="/home/:carlist/:userId" component={withLoginAuthentication(Carlist)} />
-          <Route
-            exact
-            path="/home/:carlist/:userId/:carInfoId/:tab"
-            component={withLoginAuthentication(DetailsForm)}
-          />
-          <Route exact path="/trip" component={Trip} />
-          <Redirect from="/" to={`${hasCookie ? '/home' : '/login'}`} />
-        </Switch>
+        <ReactRoutes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/home" element={<HomeAuth />} />
+          <Route path="/details/:id/:tab" element={<DetailsAuth />} />
+          <Route path="/home/mycarlist/addcar" element={<AddCarAuth />} />
+          <Route path="/home/settings" element={<SettingsAuth />} />
+          <Route path="/home/:carlist" element={<CarlistAuth />} />
+          <Route path="/home/:carlist/:userId" element={<CarlistAuth />} />
+          <Route path="/home/:carlist/:userId/:carInfoId/:tab" element={<DetailsAuth />} />
+          <Route path="/trip" element={<Trip />} />
+          <Route path="/" element={<Navigate to={hasCookie ? '/home' : '/login'} />} />
+        </ReactRoutes>
       )
   );
 

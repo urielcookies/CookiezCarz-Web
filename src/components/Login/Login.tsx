@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { flow as compose, isUndefined } from 'lodash';
 
@@ -28,7 +28,7 @@ const Login: FC<LoginProps> = ({ theme }) => {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
 
-  const { push } = useHistory();
+  const navigate = useNavigate();
   const setActiveUserUpdate = useActiveUserUpdate();
 
   const formik = useFormik({
@@ -45,7 +45,7 @@ const Login: FC<LoginProps> = ({ theme }) => {
         writeCookie('token', JWTResponse.data);
         const userResponse = await fetchActiveUser();
         setActiveUserUpdate(userResponse.data as ActiveUser);
-        push('/home');
+        navigate('/home');
       }
     },
   });
