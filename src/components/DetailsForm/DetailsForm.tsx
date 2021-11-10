@@ -65,6 +65,7 @@ const DetailsForm: FC = () => {
     window.history.pushState({}, '', `${path}/${tabs[newValue]}`);
   };
 
+  const vehicleOwner = isEqual(information.data.UserAccountId, activeUser.Id);
   return (
     <DetailFormStyle>
       <AppBar id="appbar" position="static" color="default">
@@ -89,6 +90,7 @@ const DetailsForm: FC = () => {
           <Information
             information={information}
             userHasWritePermissions={userHasWritePermissions.data}
+            vehicleOwner={vehicleOwner}
           />
         </TabPanel>
       )}

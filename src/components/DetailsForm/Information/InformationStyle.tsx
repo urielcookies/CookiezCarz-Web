@@ -7,6 +7,15 @@ const InformationStyle = styled.div`
     height: 5%;
   }
 
+  .secondary-actions {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      flex-basis: 48%;
+    }
+  }
+
   .divider {
     height: 2%;
   }

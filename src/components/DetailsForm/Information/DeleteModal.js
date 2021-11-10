@@ -1,17 +1,19 @@
-import React, {useState} from 'react';
-import {Button, Header, Modal} from 'semantic-ui-react'
-import {withRouter} from 'react-router-dom';
+import React, { useState } from 'react';
+import { Button, Header, Modal } from 'semantic-ui-react';
+import { useNavigate } from 'react-router-dom';
 
-import {deleteCarInformation} from '../../../endpoints';
+import { deleteCarInformation } from '../../../endpoints';
 
-const DeleteModal = ({carInfoId, close, history, show}) => {
+const DeleteModal = ({
+  carInfoId, close, show,
+}) => {
   const [isLoading, setIsLoading] = useState(false);
-
+  const navigate = useNavigate();
   const deleteCarInfoHandler = () => {
-    setIsLoading(true)
+    setIsLoading(true);
     deleteCarInformation(carInfoId)
-      .then(response => response.text())
-      .then(() => history.push('/home/mycarlist'))
+      .then((response) => response.text())
+      .then(() => navigate('/home/mycarlist'));
   };
 
   return (
@@ -20,21 +22,22 @@ const DeleteModal = ({carInfoId, close, history, show}) => {
       open={show}
       onClose={close}
       basic
-      size='small' >
-      <Header icon='trash alternate outline' content="Delete Car Information" />
-      
+      size="small"
+    >
+      <Header icon="trash alternate outline" content="Delete Car Information" />
+
       <Modal.Content>
-        Are you sure you want to delete this car information? All information, access, expenses, status, and images will be lost 
+        Are you sure you want to delete this car information? All information, access, expenses, status, and images will be lost
       </Modal.Content>
-      
+
       <Modal.Actions>
-        <div style={{display: 'flex'}}>
+        <div style={{ display: 'flex' }}>
           <Button fluid inverted loading={isLoading} color="red" content="DELETE" type="button" onClick={deleteCarInfoHandler} />
           <Button fluid inverted content="Cancel" onClick={close} />
         </div>
       </Modal.Actions>
     </Modal>
   );
-}
+};
 
-export default withRouter(DeleteModal);
+export default DeleteModal;
