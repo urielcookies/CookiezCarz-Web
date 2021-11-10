@@ -21,8 +21,10 @@ const Information: FC<InformationProps> = (props) => {
   const [deleteModalActive, setDeleteModalActive] = useState<boolean>(false);
   const [permissionsModalActive, setPermissionsModalActive] = useState<boolean>(false);
 
-  const setEditModeOff = () => setEditMode(false);
-  const setEditModeOn = () => setEditMode(true);
+  const setEditModeHandler = () => setEditMode(!editMode);
+  const setDeleteModalActiveHandler = () => setDeleteModalActive(!deleteModalActive);
+  const setPermissionsModalActiveHandler = () => setPermissionsModalActive(!permissionsModalActive);
+
   return (
     <InformationStyle>
       {!editMode && userHasWritePermissions && (
@@ -33,7 +35,7 @@ const Information: FC<InformationProps> = (props) => {
             className="edit-info-btn"
             variant="outlined"
             color="primary"
-            onClick={setEditModeOn}
+            onClick={setEditModeHandler}
           >
             Edit Information
           </Button>
@@ -47,14 +49,14 @@ const Information: FC<InformationProps> = (props) => {
             <Button
               variant="outlined"
               color="secondary"
-              onClick={() => setDeleteModalActive(true)}
+              onClick={setDeleteModalActiveHandler}
             >
               Delete Car
             </Button>
             <Button
               variant="outlined"
               color="primary"
-              onClick={() => setPermissionsModalActive(true)}
+              onClick={setPermissionsModalActiveHandler}
             >
               Permissions
             </Button>
@@ -70,7 +72,7 @@ const Information: FC<InformationProps> = (props) => {
             <InformationForm
               carInformation={data}
               refetchCarData={refetch}
-              setEditModeOff={setEditModeOff}
+              setEditModeOff={setEditModeHandler}
             />
           )
           : <InformationTable carInformation={data} />}
@@ -79,7 +81,7 @@ const Information: FC<InformationProps> = (props) => {
           <DeleteModal
             carInfoId={data.Id}
             show={deleteModalActive}
-            close={() => setDeleteModalActive(false)}
+            close={setDeleteModalActiveHandler}
           />
         )}
 
@@ -87,7 +89,7 @@ const Information: FC<InformationProps> = (props) => {
           <PermissionsModal
             carInfoId={data.Id}
             show={permissionsModalActive}
-            close={() => setPermissionsModalActive(false)}
+            close={setPermissionsModalActiveHandler}
           />
         )}
       </section>
