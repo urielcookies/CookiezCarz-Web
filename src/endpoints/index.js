@@ -1,7 +1,11 @@
 /* eslint-disable max-len */
 /* eslint-disable no-tabs */
-import { get, post, put } from 'axios';
-import { reverse } from 'lodash';
+import {
+  delete as axiosDelete,
+  get,
+  post,
+  put,
+} from 'axios';
 
 const URL = 'https://carlistapi.azurewebsites.net';
 
@@ -382,24 +386,10 @@ export const fetchUserPermission = (carInfoId) => {
     .catch((error) => console.log(error));
 };
 
-export const deleteCarInformation = (carInfoId, setIsCarExpensesLoading) => {
+export const deleteCarInformation = (carInfoId) => {
   const headers = { 'Content-Type': 'application/json', token: getCookie('token') };
-  const requestOptions = {
-    method: 'DELETE',
-    headers,
-    redirect: 'follow',
-  };
-
-  return fetch(`${URL}/api/carinformation/${carInfoId}`, requestOptions)
+  return axiosDelete(`${URL}/api/carinformation/${carInfoId}`, { headers })
     .catch((error) => console.log('error', error));
-
-  // _delete(`${URL}/api/carexpenses/${Id}`,  {params: {Id}}, {headers})
-  //   .then(({status}) => {
-  //     if (status === 200) setIsCarExpensesLoading(true)
-  //   })
-  //   .catch((error) => {
-  //     console.log('error', error)
-  //   });
 };
 
 export const fetchUsersWithCarAccess = (carId) => {
