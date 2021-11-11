@@ -80,7 +80,6 @@ const Information: FC<InformationProps> = (props) => {
         {deleteModalActive && (
           <DeleteModal
             carInfoId={data.Id}
-            show={deleteModalActive}
             closeModal={setDeleteModalActiveHandler}
           />
         )}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -13,7 +13,7 @@ import {
 
 import { deleteCarInformation } from '../../../endpoints';
 
-const DeleteModal = ({ carInfoId, closeModal }: any) => {
+const DeleteModal: FC<DeleteModalProps> = ({ carInfoId, closeModal }: any) => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -48,5 +48,10 @@ const DeleteModal = ({ carInfoId, closeModal }: any) => {
     </Dialog>
   );
 };
+
+interface DeleteModalProps {
+  carInfoId: number;
+  closeModal: Function;
+}
 
 export default DeleteModal;
