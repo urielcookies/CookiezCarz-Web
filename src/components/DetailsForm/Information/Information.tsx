@@ -87,8 +87,7 @@ const Information: FC<InformationProps> = (props) => {
         {permissionsModalActive && (
           <PermissionsModal
             carInfoId={data.Id}
-            show={permissionsModalActive}
-            close={setPermissionsModalActiveHandler}
+            closeModal={setPermissionsModalActiveHandler}
           />
         )}
       </section>
