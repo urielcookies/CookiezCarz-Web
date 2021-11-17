@@ -86,6 +86,7 @@ const GivePermission: FC<GivePermissionProps> = (props) => {
           fullWidth
           variant="outlined"
           color="primary"
+          disabled={isEqual(formik.values.Username, '')}
           onClick={handleSubmit}
         >
           {submitLoading
