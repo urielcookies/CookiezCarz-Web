@@ -43,7 +43,10 @@ const PermissionModal: FC<PermissionModalProps> = ({ carInfoId, closeModal }) =>
       onClose={closeModal}
       fullWidth
     >
-      <DialogTitle>Permissions</DialogTitle>
+      <DialogTitle>
+        {isEqual(pageIndex, 0) ? 'Give' : 'Edit'}
+        &nbsp;Permissions
+      </DialogTitle>
       <DialogContent>
         <PermissionModalStyle>
           <AppBar position="static" color="default">
@@ -68,6 +71,7 @@ const PermissionModal: FC<PermissionModalProps> = ({ carInfoId, closeModal }) =>
                 carInfoId={carInfoId}
                 close={closeModal}
                 getUsers={getUsers}
+                viewEditTab={() => setPageIndex(1)}
               />
             </TabPanel>
           )}
