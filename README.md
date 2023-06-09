@@ -1,6 +1,8 @@
 # Screenshots
 ## An app to keep track of car expenses when a user is buying, flipping, and selling cars
 
+Technologies - React, React Router, C# ASP.NET, Microsoft SQL, Azure
+
 <h2>Login</h2>
 <img src="./public/images/cookiez.png" height=400 width=200 />
 
